@@ -4,14 +4,13 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
-////===== TODO
 public class ParallelStreamsKNN implements IKNNimprov {
 	private int k;
 	private double[][] testDataset, trainDataset;
 	int NUM_INSTANCES_TRAIN, NUM_INSTANCES_TEST;
 	private int NUM_THREADS;
-	private Thread[] threads;
 	private AtomicInteger accurates;
 	
 	public ParallelStreamsKNN(int k, String TRAIN_FILENAME, String TEST_FILENAME, int NUM_THREADS, int NUM_INSTANCES_TRAIN, int NUM_INSTANCES_TEST) throws IOException {
@@ -28,7 +27,6 @@ public class ParallelStreamsKNN implements IKNNimprov {
 			testDataset = readCSV.readFile(TEST_FILENAME, NUM_INSTANCES_TEST);
 			
 			this.NUM_THREADS = NUM_THREADS;
-			threads = new Thread[NUM_THREADS];
 		//======
 		
 		this.accurates = new AtomicInteger(0);
@@ -59,31 +57,9 @@ public class ParallelStreamsKNN implements IKNNimprov {
 		System.out.println("\nExecuting KNN Algorithm...");
 		System.out.println("Number of neighbours: " + k + "\n");
 		
-		// Dividing knn algorithm execution through threads
-		for(int i = 0; i < this.NUM_THREADS; i++) {
-			
-			// Left, Right: Indexes of the test dataset that the current thread is responsible (size: NUM_INSTANCES_TEST/NUM_THREADS per thread)
-			int left = i*(NUM_INSTANCES_TEST/NUM_THREADS);
-			int right = (i+1)*(NUM_INSTANCES_TEST/NUM_THREADS);
-			
-			threads[i] = new Thread(new Runnable() {
-				public void run() {
-					for(int testLine = left; testLine < right; testLine++) {
-						ParallelStreamsKNN.this.knnPrediction(testLine);
-					}
-				}
-			});
-			threads[i].start();
-		}
-		
-		// To stop execution only when all threads ends their execution
-		for(Thread t : threads) {		
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		IntStream.range(0, this.testDataset.length).parallel().forEach(i -> {
+			ParallelStreamsKNN.this.knnPrediction(i);
+		});
 		
 		double accuracy = (accurates.doubleValue()/(double)NUM_INSTANCES_TEST)*100;
 		System.out.println(">> Final Accuracy: " + accuracy + "% | " + accurates + "/" + NUM_INSTANCES_TEST);
