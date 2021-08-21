@@ -14,7 +14,7 @@ public class ParallelStreamsKNN implements IKNNimprov {
 	private AtomicInteger accurates;
 	
 	public ParallelStreamsKNN(int k, String TRAIN_FILENAME, String TEST_FILENAME, int NUM_THREADS, int NUM_INSTANCES_TRAIN, int NUM_INSTANCES_TEST) throws IOException {
-		System.out.println("\n>> Atomic KNN Algorithm <<\n");
+		System.out.println("\n>> Parallel Stream KNN Algorithm <<\n");
 		
 		this.k = k;
 		this.NUM_INSTANCES_TRAIN = NUM_INSTANCES_TRAIN;

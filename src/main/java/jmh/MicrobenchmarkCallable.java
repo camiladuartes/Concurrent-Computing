@@ -35,13 +35,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.openjdk.jmh.annotations.*;
 
@@ -106,7 +104,19 @@ public class MicrobenchmarkCallable{
 				}
 			});
 		}
+    	
+    	// Invoke all tasks
+		List<Future<String>> result = MicrobenchmarkCallable.executorService.invokeAll(MicrobenchmarkCallable.rangePredictions);
 
+		MicrobenchmarkCallable.executorService.shutdown();
+
+		// To stop execution only when all threads ends their execution
+		try {
+			MicrobenchmarkCallable.executorService.awaitTermination(60, TimeUnit.SECONDS);
+		} catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		return;
     }
     
@@ -134,6 +144,18 @@ public class MicrobenchmarkCallable{
 				}
 			});
     	}
+    	
+    	// Invoke all tasks
+		List<Future<String>> result = MicrobenchmarkCallable.executorService.invokeAll(MicrobenchmarkCallable.rangePredictions);
+
+		MicrobenchmarkCallable.executorService.shutdown();
+
+		// To stop execution only when all threads ends their execution
+		try {
+			MicrobenchmarkCallable.executorService.awaitTermination(60, TimeUnit.SECONDS);
+		} catch(InterruptedException e) {
+			e.printStackTrace();
+		}
     	
     	return;
     }

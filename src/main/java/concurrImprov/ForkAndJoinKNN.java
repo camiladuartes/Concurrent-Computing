@@ -18,7 +18,7 @@ public class ForkAndJoinKNN implements IKNNimprov {
 	private AtomicInteger accurates;
 	
 	public ForkAndJoinKNN(int k, String TRAIN_FILENAME, String TEST_FILENAME, int NUM_THREADS, int NUM_INSTANCES_TRAIN, int NUM_INSTANCES_TEST) throws IOException {
-		System.out.println("\n>> Atomic KNN Algorithm <<\n");
+		System.out.println("\n>> Fork and Join KNN Algorithm <<\n");
 		
 		this.k = k;
 		this.NUM_INSTANCES_TRAIN = NUM_INSTANCES_TRAIN;

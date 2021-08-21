@@ -23,7 +23,7 @@ public class CallableAndFutureKNN implements IKNNimprov {
 	List<Callable<String>> rangePredictions;
 	
 	public CallableAndFutureKNN(int k, String TRAIN_FILENAME, String TEST_FILENAME, int NUM_THREADS, int NUM_INSTANCES_TRAIN, int NUM_INSTANCES_TEST) throws IOException {
-		System.out.println("\n>> Atomic KNN Algorithm <<\n");
+		System.out.println("\n>> Callable and Future KNN Algorithm <<\n");
 		
 		this.k = k;
 		this.NUM_INSTANCES_TRAIN = NUM_INSTANCES_TRAIN;
@@ -34,8 +34,7 @@ public class CallableAndFutureKNN implements IKNNimprov {
 			ReadCSV readCSV = new ReadCSV();
 			trainDataset = readCSV.readFile(TRAIN_FILENAME, NUM_INSTANCES_TRAIN);
 			testDataset = readCSV.readFile(TEST_FILENAME, NUM_INSTANCES_TEST);
-			
-			this.NUM_THREADS = NUM_THREADS;
+			this.NUM_THREADS = NUM_THREADS; // Comment all except this.
 			this.executorService = Executors.newFixedThreadPool(NUM_THREADS);
 			this.rangePredictions = new ArrayList<>(); // List of tasks
 		//======
