@@ -25,7 +25,8 @@ import concurrImprov.IKNNimprov;
  * 
  * >> Run JMeter test:
  * 1. Maven Clean, Maven Install
- * 2. java -jar target/TestesJMeter-0.0.1-SNAPSHOT.jar
+ * 2. Copy TestesJMeter-0.0.1-SNAPSHOT.jar to apache-jmeter/lib/ext
+ * 3. Execute ./bin/jmeter
  * */
 
 public class Main {
@@ -87,11 +88,11 @@ public class Main {
 				firstImplem = false;
 				break;
 			}
-			else if(chooseAlgo == 7){
-				knn_ = new ReactiveProgrammKNN(k, TRAIN_FILENAME, TEST_FILENAME, NUM_THREADS, NUM_INSTANCES_TRAIN, NUM_INSTANCES_TEST);
-				firstImplem = false;
-				break;
-			}
+//			else if(chooseAlgo == 7){
+//				knn_ = new ReactiveProgrammKNN(k, TRAIN_FILENAME, TEST_FILENAME, NUM_THREADS, NUM_INSTANCES_TRAIN, NUM_INSTANCES_TEST);
+//				firstImplem = false;
+//				break;
+//			}
 		}
 		if(firstImplem)
 			knn.knnAlgorithm();
